@@ -1,0 +1,176 @@
+/* ─────────────────────────────────────────────
+   Closing call-to-action (plain CSS, classes prefixed "ct-")
+   Full-width dusk photo, centred heading and buttons, fading into deep
+   navy at the bottom (ready for a dark footer below).
+   ───────────────────────────────────────────── */
+
+.ct {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --navy-deep: #071a2e;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: clamp(480px, 46vw, 620px);
+  padding: clamp(72px, 8vw, 120px) 24px clamp(64px, 6vw, 100px);
+  color: #fff;
+  text-align: center;
+  background: var(--navy-deep);
+}
+
+.ct-photo {
+  z-index: -2;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+/* soft dark wash for legibility, fading to deep navy at the bottom */
+.ct::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7, 26, 46, 0.35) 0%, rgba(7, 26, 46, 0.25) 35%, rgba(7, 26, 46, 0.55) 70%, var(--navy-deep) 100%);
+}
+
+.ct-content {
+  max-width: 760px;
+}
+
+.ct-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.ct-title {
+  margin: 0;
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+}
+
+.ct-title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.ct-text {
+  max-width: 520px;
+  margin: 18px auto 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ct-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.ct-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.ct-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s ease;
+}
+
+.ct-btn--primary {
+  color: #fff;
+  background: var(--uraan-blue);
+  box-shadow: 0 14px 30px -12px rgba(29, 114, 179, 0.8);
+}
+
+.ct-btn--primary:hover {
+  background: var(--uraan-blue-dark);
+  transform: translateY(-1px);
+}
+
+.ct-btn--primary:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.ct-btn--ghost {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.ct-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.ct-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ── Responsive ───────────────────────────── */
+
+@media (max-width: 600px) {
+  .ct {
+    min-height: 520px;
+    padding: 72px 22px 100px;
+  }
+
+  .ct-text {
+    font-size: 14px;
+  }
+
+  .ct-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ct-btn {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-btn,
+  .ct-btn svg {
+    transition: none;
+  }
+}

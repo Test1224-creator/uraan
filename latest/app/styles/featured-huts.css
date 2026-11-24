@@ -1,0 +1,352 @@
+/* ─────────────────────────────────────────────
+   Featured huts section (plain CSS, classes prefixed "fh-")
+   ───────────────────────────────────────────── */
+
+.fh {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --navy: #0b2540;
+  --sand: #f5efe6;
+  --ink-soft: #5b6670;
+
+  background: var(--sand);
+  color: var(--navy);
+  /* top is tighter than bottom so the section sits closer to the hero */
+  /* bottom kept short: the Why Uraan section below shares this background */
+  padding: clamp(40px, 4.5vw, 64px) 0 clamp(28px, 3.5vw, 48px);
+}
+
+.fh-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-inline: 28px; /* same column as the navbar + hero */
+}
+
+/* ── Header ───────────────────────────────── */
+
+.fh-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+}
+
+.fh-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--uraan-blue);
+}
+
+.fh-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.fh-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.fh-title em {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--uraan-blue);
+}
+
+.fh-aside {
+  max-width: 320px;
+  padding-bottom: 4px;
+}
+
+.fh-aside p {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.fh-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--uraan-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -10px rgba(29, 114, 179, 0.7);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.fh-view-all svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s ease;
+}
+
+.fh-view-all:hover {
+  background: var(--uraan-blue-dark);
+  transform: translateY(-1px);
+}
+
+.fh-view-all:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ── Cards ────────────────────────────────── */
+
+.fh-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* three equal cards */
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fh-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: clamp(340px, 28vw, 400px);
+  border-radius: 18px;
+  background: var(--navy);
+  box-shadow: 0 24px 50px -30px rgba(11, 37, 64, 0.55);
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.45s ease;
+}
+
+.fh-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 34px 60px -30px rgba(11, 37, 64, 0.65);
+}
+
+.fh-photo {
+  z-index: -2;
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.fh-card:hover .fh-photo {
+  transform: scale(1.06);
+}
+
+/* readable bottom + a light top fade for the chips */
+.fh-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(8, 20, 32, 0.35) 0%, rgba(8, 20, 32, 0) 22%),
+    linear-gradient(0deg, rgba(8, 20, 32, 0.88) 0%, rgba(8, 20, 32, 0.45) 32%, rgba(8, 20, 32, 0) 58%);
+}
+
+/* glass chips (beach + hut code) */
+.fh-chips {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.fh-chip {
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.fh-chip--accent {
+  background: rgba(29, 114, 179, 0.85);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* card text */
+.fh-body {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  color: #fff;
+}
+
+.fh-name-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.fh-name {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.4vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.fh-tagline {
+  margin: 4px 0 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* round WhatsApp enquiry button */
+.fh-enquire {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--navy);
+  background: #fff;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.fh-enquire svg {
+  width: 15px;
+  height: 15px;
+}
+
+.fh-enquire:hover,
+.fh-card:hover .fh-enquire {
+  background: var(--uraan-blue);
+  color: #fff;
+  transform: rotate(45deg);
+}
+
+/* features as small glass tags: they wrap cleanly at any card width */
+.fh-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.fh-specs li {
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  line-height: 1.2;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.fh-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.fh-location svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+
+/* ── Responsive ───────────────────────────── */
+
+/* Tablet & phone: cards become a swipeable row (all the same size) */
+@media (max-width: 900px) {
+  .fh-inner {
+    width: 100%;
+    padding-inline: 32px;
+  }
+
+  .fh-grid {
+    display: flex;
+    gap: 14px;
+    margin-inline: -32px;
+    padding: 6px 32px 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 32px;
+    scrollbar-width: none;
+  }
+
+  .fh-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fh-card {
+    flex: 0 0 46%;
+    height: 380px;
+    scroll-snap-align: start;
+  }
+
+  .fh-card:hover {
+    transform: none;
+  }
+}
+
+/* Phone: stacked header, one card per screen with the next peeking in */
+@media (max-width: 680px) {
+  .fh-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .fh-aside {
+    max-width: none;
+  }
+
+  .fh-card {
+    flex-basis: 84%;
+    height: 380px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fh-card,
+  .fh-photo,
+  .fh-enquire,
+  .fh-view-all,
+  .fh-view-all svg {
+    transition: none;
+  }
+}

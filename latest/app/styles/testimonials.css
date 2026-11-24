@@ -1,0 +1,287 @@
+/* ─────────────────────────────────────────────
+   Guest reviews slider (plain CSS, classes prefixed "tm-")
+   Text-only cards in a sideways-scrolling track that bleeds off the
+   right edge, so the next card peeks in.
+   ───────────────────────────────────────────── */
+
+.tm {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --navy: #0b2540;
+  --sand: #f5efe6;
+  --ink-soft: #5b6670;
+  --star: #f2b33d;
+
+  overflow: hidden; /* the track bleeds right; never let it scroll the page */
+  background: var(--sand);
+  color: var(--navy);
+  padding: clamp(24px, 3vw, 48px) 0 clamp(56px, 6vw, 88px);
+}
+
+.tm-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-inline: 28px; /* same column as the rest of the page */
+}
+
+/* ── Header ───────────────────────────────── */
+
+.tm-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+}
+
+.tm-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--uraan-blue);
+}
+
+.tm-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.tm-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.tm-title em {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--uraan-blue);
+}
+
+.tm-arrows {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 6px;
+}
+
+.tm-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(11, 37, 64, 0.25);
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.tm-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tm-arrow:hover:not(:disabled) {
+  border-color: var(--navy);
+  background: rgba(11, 37, 64, 0.05);
+}
+
+.tm-arrow--next {
+  border-color: transparent;
+  background: var(--uraan-blue);
+  color: #fff;
+}
+
+.tm-arrow--next:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--uraan-blue-dark);
+}
+
+.tm-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.tm-arrow:focus-visible {
+  outline: 2px solid var(--uraan-blue);
+  outline-offset: 3px;
+}
+
+/* ── Track + cards ────────────────────────── */
+
+.tm-track {
+  /* extend to the right edge of the screen so the next card peeks in */
+  width: calc(100% + (100vw - 100%) / 2);
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 4px 28px 24px 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.tm-track::-webkit-scrollbar {
+  display: none;
+}
+
+.tm-card {
+  flex: 0 0 clamp(300px, 36vw, 460px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 28px 24px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(11, 37, 64, 0.07);
+  box-shadow: 0 18px 40px -30px rgba(11, 37, 64, 0.4);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.tm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 50px -30px rgba(11, 37, 64, 0.5);
+}
+
+.tm-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tm-mark {
+  font-family: var(--font-serif);
+  font-size: 4.2rem;
+  font-weight: 600;
+  line-height: 0.6;
+  color: var(--uraan-blue);
+  opacity: 0.25;
+}
+
+.tm-stars {
+  display: flex;
+  gap: 2px;
+  color: var(--star);
+}
+
+.tm-stars svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tm-quote {
+  margin: 18px 0 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--navy);
+  padding-bottom: 22px;
+}
+
+.tm-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto; /* footers line up across cards */
+  padding-top: 18px;
+  border-top: 1px solid rgba(11, 37, 64, 0.08);
+}
+
+.tm-avatar {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--uraan-blue);
+  background: rgba(29, 114, 179, 0.08);
+  border: 1px solid rgba(29, 114, 179, 0.18);
+}
+
+.tm-avatar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tm-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tm-meta {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* ── Responsive ───────────────────────────── */
+
+@media (max-width: 680px) {
+  .tm-inner {
+    width: 100%;
+    padding-inline: 32px;
+  }
+
+  .tm-head {
+    align-items: flex-end;
+  }
+
+  .tm-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tm-track {
+    width: calc(100% + 32px);
+    padding-right: 32px;
+  }
+
+  .tm-card {
+    flex-basis: 84%;
+    padding: 22px 22px 20px;
+  }
+
+  .tm-quote {
+    font-size: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-track {
+    scroll-behavior: auto;
+  }
+
+  .tm-card,
+  .tm-arrow {
+    transition: none;
+  }
+}

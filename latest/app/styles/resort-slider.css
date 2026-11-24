@@ -1,0 +1,334 @@
+/* ─────────────────────────────────────────────
+   Resorts slider (plain CSS, classes prefixed "rs-")
+   One big rounded photo card; slides crossfade with a slow zoom.
+   ───────────────────────────────────────────── */
+
+.rs {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --navy: #0b2540;
+  --sand: #f5efe6;
+
+  background: var(--sand);
+  padding: clamp(20px, 2.5vw, 36px) 0 clamp(16px, 2vw, 28px);
+}
+
+.rs-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-inline: 28px; /* same column as the rest of the page */
+}
+
+.rs-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: clamp(420px, 42vw, 540px);
+  border-radius: 22px;
+  background: var(--navy);
+  box-shadow: 0 30px 60px -36px rgba(11, 37, 64, 0.6);
+  color: #fff;
+}
+
+/* ── Slides ───────────────────────────────── */
+
+.rs-slide {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.rs-slide.is-active {
+  opacity: 1;
+}
+
+.rs-photo {
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 6.5s ease-out;
+}
+
+.rs-slide.is-active .rs-photo {
+  transform: scale(1);
+}
+
+/* readable bottom + a whisper of shade at the top */
+.rs-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(8, 20, 32, 0.25) 0%, rgba(8, 20, 32, 0) 25%),
+    linear-gradient(0deg, rgba(8, 20, 32, 0.82) 0%, rgba(8, 20, 32, 0.45) 30%, rgba(8, 20, 32, 0) 60%);
+}
+
+/* top-left label */
+.rs-label {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  margin: 0;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* ── Bottom bar: thumbnails + text + controls ── */
+
+.rs-bottom {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: end;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.rs-thumbs {
+  display: flex;
+  gap: 10px;
+}
+
+.rs-thumb {
+  position: relative;
+  overflow: hidden;
+  width: clamp(130px, 13vw, 170px);
+  aspect-ratio: 4 / 3.2;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.rs-thumb:hover {
+  transform: translateY(-3px);
+  border-color: #fff;
+}
+
+.rs-thumb img {
+  object-fit: cover;
+}
+
+.rs-thumb span {
+  position: absolute;
+  left: 8px;
+  bottom: 7px;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+.rs-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.rs-text {
+  max-width: 560px;
+  justify-self: end;
+  width: 100%;
+}
+
+.rs-eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.rs-title {
+  margin: 0;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.rs-title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.rs-desc {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rs-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.rs-count {
+  font-size: 1.15rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.rs-count span {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* progress line under the counter */
+.rs-progress {
+  flex: 1;
+  height: 2px;
+  margin: 0 6px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+}
+
+.rs-progress i {
+  display: block;
+  height: 100%;
+  background: #fff;
+  transform-origin: left;
+  transition: transform 0.6s ease;
+}
+
+.rs-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.rs-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.rs-arrow svg {
+  width: 17px;
+  height: 17px;
+}
+
+.rs-arrow:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.rs-arrow--next {
+  background: var(--uraan-blue);
+  border-color: transparent;
+}
+
+.rs-arrow--next:hover {
+  background: var(--uraan-blue-dark);
+  transform: translateX(2px);
+}
+
+.rs-arrow:focus-visible,
+.rs-thumb:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ── Responsive ───────────────────────────── */
+
+@media (max-width: 900px) {
+  .rs-inner {
+    width: 100%;
+    padding-inline: 32px;
+  }
+
+  .rs-card {
+    height: clamp(440px, 70vw, 520px);
+  }
+
+  /* thumbnails take too much room on smaller screens */
+  .rs-thumbs {
+    display: none;
+  }
+
+  .rs-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .rs-text {
+    max-width: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .rs-inner {
+    padding-inline: 20px;
+  }
+
+  .rs-card {
+    height: 480px;
+    border-radius: 18px;
+  }
+
+  .rs-label {
+    top: 14px;
+    left: 14px;
+  }
+
+  .rs-bottom {
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+  }
+
+  .rs-title {
+    font-size: 1.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rs-slide,
+  .rs-photo,
+  .rs-thumb,
+  .rs-arrow,
+  .rs-progress i {
+    transition: none;
+  }
+
+  .rs-photo {
+    transform: none;
+  }
+}

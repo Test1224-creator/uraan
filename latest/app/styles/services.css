@@ -1,0 +1,269 @@
+/* ─────────────────────────────────────────────
+   "Everything for your beach day" services section
+   (plain CSS, classes prefixed "sv-")
+   ───────────────────────────────────────────── */
+
+.sv {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --navy: #0b2540;
+  --ink-soft: #5b6670;
+
+  background: #f5efe6; /* same warm sand as the sections around it */
+  color: var(--navy);
+  /* short top/bottom: the sand sections above and below flow straight in */
+  padding: clamp(16px, 2vw, 32px) 0 clamp(16px, 2vw, 28px);
+}
+
+.sv-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-inline: 28px; /* same column as the rest of the page */
+}
+
+/* ── Header (same scale as the sections above) ── */
+
+.sv-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+}
+
+.sv-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--uraan-blue);
+}
+
+.sv-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.sv-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.sv-title em {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--uraan-blue);
+}
+
+.sv-aside {
+  max-width: 320px;
+  padding-bottom: 4px;
+}
+
+.sv-aside p {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.sv-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--uraan-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -10px rgba(29, 114, 179, 0.7);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.sv-cta svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s ease;
+}
+
+.sv-cta:hover {
+  background: var(--uraan-blue-dark);
+  transform: translateY(-1px);
+}
+
+.sv-cta:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ── Service cards ────────────────────────── */
+
+.sv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sv-media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  background: #e9eef3;
+  box-shadow: 0 22px 44px -30px rgba(11, 37, 64, 0.55);
+}
+
+.sv-photo {
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sv-item:hover .sv-photo {
+  transform: scale(1.05);
+}
+
+/* soft fade at the bottom of each photo for the tags */
+.sv-media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 45%;
+  background: linear-gradient(0deg, rgba(8, 20, 32, 0.6) 0%, rgba(8, 20, 32, 0) 100%);
+  pointer-events: none;
+}
+
+.sv-tags {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sv-tags li {
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.sv-body {
+  padding: 14px 2px 0;
+}
+
+.sv-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(11, 37, 64, 0.1);
+}
+
+.sv-name {
+  margin: 0;
+  font-size: clamp(1rem, 1.25vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.sv-num {
+  flex: none;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--uraan-blue);
+}
+
+.sv-desc {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* ── Responsive ───────────────────────────── */
+
+/* Tablet & phone: a swipeable row */
+@media (max-width: 900px) {
+  .sv-inner {
+    width: 100%;
+    padding-inline: 32px;
+  }
+
+  .sv-grid {
+    display: flex;
+    gap: 16px;
+    margin-inline: -32px;
+    padding: 4px 32px 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 32px;
+    scrollbar-width: none;
+  }
+
+  .sv-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sv-item {
+    flex: 0 0 46%;
+    scroll-snap-align: start;
+  }
+
+}
+
+@media (max-width: 680px) {
+  .sv-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .sv-aside {
+    max-width: none;
+  }
+
+  .sv-item {
+    flex-basis: 80%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-photo,
+  .sv-cta,
+  .sv-cta svg {
+    transition: none;
+  }
+}

@@ -1,0 +1,259 @@
+/* ─────────────────────────────────────────────
+   Footer (plain CSS, classes prefixed "ft-")
+   Continues straight on from the call-to-action, which fades into the
+   same deep navy, so the two read as one closing block.
+   ───────────────────────────────────────────── */
+
+.ft {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --sky: #7cc0f2;
+  --navy-deep: #071a2e;
+
+  overflow: hidden;
+  background: var(--navy-deep);
+  color: #fff;
+  padding: clamp(16px, 2vw, 28px) 0 0;
+}
+
+.ft-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-inline: 28px; /* same column as the rest of the page */
+}
+
+/* small "• LABEL" headings, like the reference */
+.ft-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ft-label::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sky);
+}
+
+.ft-hint {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Top: brand + link columns ───────────── */
+
+.ft-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: clamp(28px, 4vw, 48px);
+  padding-bottom: clamp(28px, 3.5vw, 40px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ft-logo {
+  display: inline-block;
+}
+
+.ft-logo img {
+  display: block;
+  width: 88px;
+  height: auto;
+  /* white version of the blue logo, for the dark footer */
+  filter: brightness(0) invert(1);
+}
+
+.ft-contact {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.ft-contact a,
+.ft-contact p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ft-contact a:hover {
+  color: var(--sky);
+}
+
+.ft-links {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ft-links a {
+  position: relative;
+  display: inline-block;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* underline slides in on hover */
+.ft-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.ft-links a:hover {
+  color: var(--sky);
+}
+
+.ft-links a:hover::after {
+  transform: scaleX(1);
+}
+
+.ft a:focus-visible {
+  outline: 2px solid var(--sky);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Giant wordmark with corner brackets ─── */
+
+.ft-mark {
+  position: relative;
+  width: min(100%, 760px); /* smaller wordmark, centred */
+  margin: clamp(28px, 3.5vw, 40px) auto 0;
+  padding: clamp(10px, 1.5vw, 16px) clamp(10px, 1.5vw, 16px) 0;
+}
+
+/* helper box that carries the two bottom brackets */
+.ft-mark-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* four thin corner brackets */
+.ft-mark::before,
+.ft-mark::after,
+.ft-mark-corners::before,
+.ft-mark-corners::after {
+  content: "";
+  position: absolute;
+  width: clamp(20px, 3vw, 40px);
+  height: clamp(20px, 3vw, 40px);
+  border-color: rgba(255, 255, 255, 0.35);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+}
+
+.ft-mark::before {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.ft-mark::after {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.ft-mark-corners::before {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.ft-mark-corners::after {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+
+.ft-word {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-sans);
+  font-weight: 800;
+}
+
+/* ── Bottom bar ───────────────────────────── */
+
+.ft-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: 16px 0 20px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.ft-bottom p {
+  margin: 0;
+}
+
+/* ── Responsive ───────────────────────────── */
+
+@media (max-width: 900px) {
+  .ft-top {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ft-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 680px) {
+  .ft-inner {
+    width: 100%;
+    padding-inline: 32px;
+  }
+
+  .ft-links a {
+    font-size: 0.95rem;
+  }
+
+  .ft-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-links a,
+  .ft-links a::after {
+    transition: none;
+  }
+}

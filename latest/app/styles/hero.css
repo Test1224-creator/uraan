@@ -1,0 +1,349 @@
+/* ─────────────────────────────────────────────
+   Uraan hero (plain CSS, classes prefixed "hx-")
+
+   Layer order (bottom → top):
+     photo → top shade → giant word → hut cut-out → bottom shade
+     → word outline → content
+
+   The photo and the cut-out live in .hx-stage, a box with the photo's
+   exact aspect ratio that "covers" the hero like object-fit: cover, so
+   the two images always line up perfectly.
+   ───────────────────────────────────────────── */
+
+.hx {
+  --img-ratio: 1.4981; /* 1600 / 1068 */
+  --fx: 0.62; /* horizontal focal point (0 = left, 1 = right) */
+  --fy: 0.5; /* vertical focal point */
+  --stage-w: max(100cqw, calc(100cqh * var(--img-ratio)));
+  --stage-h: max(100cqh, calc(100cqw / var(--img-ratio)));
+  --content-w: min(1200px, calc(100cqw - 48px));
+  --uraan-blue: #1d72b3;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  container-type: size;
+  height: 100svh;
+  min-height: 620px;
+  background: #3c4a57;
+  color: #fff;
+}
+
+/* ── Stage (photo + cut-out + callouts) ───── */
+
+.hx-stage {
+  position: absolute;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  left: calc((100cqw - var(--stage-w)) * var(--fx));
+  top: calc((100cqh - var(--stage-h)) * var(--fy));
+}
+
+.hx-photo,
+.hx-cutout {
+  object-fit: cover;
+  filter: brightness(0.9) saturate(0.95);
+}
+
+.hx-photo {
+  z-index: 0;
+}
+
+.hx-cutout {
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* darkens the sky a little so the white word reads clearly */
+.hx-shade-top {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 24, 38, 0.5) 0%,
+    rgba(10, 24, 38, 0.18) 35%,
+    rgba(10, 24, 38, 0) 55%
+  );
+}
+
+/* bottom fade behind the socials (also hides the photo watermark) */
+.hx-shade-bottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 38%;
+  z-index: 4;
+  background: linear-gradient(
+    0deg,
+    rgba(8, 18, 28, 0.72) 0%,
+    rgba(8, 18, 28, 0.35) 45%,
+    rgba(8, 18, 28, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Left text block: URAAN / Luxury Beach Huts / Explore ── */
+
+.hx-top {
+  /* Same column as the navbar, so the block lines up with the logo.
+     Centred with margins, NOT transform: a transform would create a
+     stacking context and stop the hut cut-out sliding between the
+     filled word and its outline. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* navbar (with logo) ends ~107px down; keep clear space below it */
+  top: clamp(220px, 24cqh, 260px);
+  width: var(--content-w);
+  margin-inline: auto;
+  padding-inline: 28px;
+
+  /* space between the heading and the beaches line
+     (the Explore link has its own margin-top in .hx-explore) */
+  --hx-stack-gap: 20px;
+}
+
+.hx-title {
+  margin: 0;
+  font-weight: inherit;
+}
+
+/* Big word reaching across to the hut (its roof slides in front of the
+   last letters). ~5x wider than tall, so the width is capped by the
+   screen width AND height to stay in proportion on wide, short screens. */
+.hx-word-wrap {
+  position: relative;
+  display: block;
+  /* End the word just before the hut. The photo spans the whole screen
+     and the hut's balcony starts at its middle (50cqw), while the text
+     column is centred, so subtract the column's left offset plus a small
+     gap. Also capped by height and a max size. */
+  width: min(
+    100%,
+    calc(50cqw - (100cqw - var(--content-w)) / 2 - 60px),
+    80cqh,
+    720px
+  );
+}
+
+.hx-word {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: 30px;
+}
+
+.hx-word--fill {
+  position: relative;
+  z-index: 6; /* above the cut-out (3) and bottom shade (4) */
+}
+
+.hx-word--outline {
+  display: none; /* no longer needed, the word is fully in front */
+}
+.hx-beaches {
+  position: relative;
+  z-index: 7;
+  margin: var(--hx-stack-gap) 0 0;
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+.hx-word--outline text {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1.4px;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Explore link ─────────────────────────── */
+
+.hx-explore {
+  position: relative;
+  z-index: 7;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px; /* space above the Explore link */
+  padding-bottom: 6px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 300;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+  transition:
+    gap 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.hx-explore svg {
+  width: 13px;
+  height: 13px;
+  transition: transform 0.25s ease;
+}
+
+.hx-explore:hover {
+  gap: 14px;
+  border-color: var(--uraan-blue);
+}
+
+.hx-explore:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ── Bottom row: socials ──────────────────── */
+
+.hx-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(24px, 5cqh, 48px);
+  z-index: 7;
+  width: var(--content-w);
+  margin-inline: auto;
+  padding-inline: 28px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+
+.hx-socials {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hx-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.hx-social svg {
+  width: 19px;
+  height: 19px;
+}
+
+.hx-social:hover {
+  background: var(--uraan-blue);
+  border-color: var(--uraan-blue);
+  transform: translateY(-2px);
+}
+
+/* ── Responsive ───────────────────────────── */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .hx {
+    --content-w: calc(100cqw - 28px);
+  }
+
+  .hx-top,
+  .hx-bottom {
+    padding-inline: 18px;
+  }
+
+  .hx-top {
+    top: clamp(148px, 19cqh, 220px);
+  }
+
+  .hx-word-wrap {
+    width: min(100%, 520px);
+  }
+}
+
+/* Phone */
+@media (max-width: 600px) {
+  .hx {
+    --fx: 0.6;
+    min-height: 560px;
+  }
+
+  .hx-top {
+    top: 128px;
+  }
+
+  .hx-word-wrap {
+    width: 100%;
+  }
+
+
+  .hx-beaches {
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+  }
+
+
+  .hx-bottom {
+    justify-content: flex-start;
+  }
+
+  .hx-social {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hx-social svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+/* Portrait screens (phones, upright tablets): the sky is tall and empty,
+   so the whole text block sits low on the deck, just above the social
+   icons. Placed after the phone rules so it wins over their `top`. */
+@media (max-aspect-ratio: 1/1) {
+  .hx-top {
+    top: auto;
+    bottom: calc(clamp(24px, 5cqh, 48px) + 42px + 26px);
+  }
+
+  /* down here the word sits over the deck (part of the cut-out layer),
+     so draw the filled word above it and drop the outline copy */
+  .hx-word--fill {
+    z-index: 6;
+  }
+
+  .hx-word--outline {
+    display: none;
+  }
+
+  .hx-shade-bottom {
+    height: 62%;
+    background: linear-gradient(
+      0deg,
+      rgba(8, 18, 28, 0.82) 0%,
+      rgba(8, 18, 28, 0.55) 40%,
+      rgba(8, 18, 28, 0) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-explore,
+  .hx-explore svg,
+  .hx-social {
+    transition: none;
+  }
+}

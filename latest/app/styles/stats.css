@@ -1,0 +1,337 @@
+/* ─────────────────────────────────────────────
+   "Why Uraan" stats section (plain CSS, classes prefixed "st-")
+   Same warm sand background as the Featured Huts section above it.
+   ───────────────────────────────────────────── */
+
+.st {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --navy: #0b2540;
+  --sand: #f5efe6;
+  --ink-soft: #5b6670;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* small top padding: it follows straight on from the sand huts section */
+  padding: clamp(20px, 2.5vw, 40px) 0 clamp(24px, 2.5vw, 40px);
+  color: var(--navy);
+  background: var(--sand);
+}
+
+/* soft wave lines along the bottom */
+.st-waves {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: -1;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+}
+
+.st-waves path {
+  fill: none;
+  stroke: rgba(29, 114, 179, 0.14);
+  stroke-width: 1;
+}
+
+.st-inner {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  padding-inline: 28px; /* same column as the rest of the page */
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+
+/* ── Left: story ──────────────────────────── */
+
+.st-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--uraan-blue);
+}
+
+.st-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.st-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.st-title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--uraan-blue);
+}
+
+.st-text {
+  margin: 18px 0 0;
+  max-width: 420px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* six beach tags: always three per row */
+.st-beaches {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 6px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.st-beaches li {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  color: var(--navy);
+  background: #fff;
+  border: 1px solid rgba(11, 37, 64, 0.1);
+}
+
+.st-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--uraan-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -10px rgba(29, 114, 179, 0.7);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.st-cta svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s ease;
+}
+
+.st-cta:hover {
+  background: var(--uraan-blue-dark);
+  transform: translateY(-1px);
+}
+
+.st-cta:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ── Right: stat tiles (all the same size) ── */
+
+.st-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr; /* every row the same height → equal tiles */
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.st-tile {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid rgba(11, 37, 64, 0.07);
+  box-shadow: 0 18px 40px -28px rgba(11, 37, 64, 0.35);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.st-tile:hover {
+  transform: translateY(-3px);
+  border-color: rgba(29, 114, 179, 0.25);
+  box-shadow: 0 26px 50px -28px rgba(11, 37, 64, 0.45);
+}
+
+/* the headline stat gets the brand-blue treatment */
+.st-tile--featured {
+  color: #fff;
+  background: linear-gradient(150deg, #2584cc 0%, var(--uraan-blue) 45%, #134f80 100%);
+  border-color: transparent;
+  box-shadow: 0 24px 50px -24px rgba(29, 114, 179, 0.75);
+}
+
+.st-tile--featured:hover {
+  border-color: transparent;
+  box-shadow: 0 30px 56px -24px rgba(29, 114, 179, 0.85);
+}
+
+.st-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--uraan-blue);
+  background: rgba(29, 114, 179, 0.08);
+  border: 1px solid rgba(29, 114, 179, 0.18);
+}
+
+.st-tile--featured .st-icon {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.st-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.st-number {
+  margin: auto 0 0;
+  padding-top: 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 3.6vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.st-suffix {
+  color: var(--uraan-blue);
+}
+
+.st-tile--featured .st-suffix {
+  color: #cfe8fb;
+}
+
+.st-label {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.st-desc {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.st-tile--featured .st-desc {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Responsive ───────────────────────────── */
+
+@media (max-width: 1024px) {
+  .st-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .st-text {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 680px) {
+  .st-inner {
+    width: 100%;
+    padding-inline: 32px;
+  }
+
+  .st-grid {
+    gap: 12px;
+    grid-auto-rows: auto;
+  }
+
+  /* compact square tiles on phones: icon, number and label only */
+  .st-tile {
+    aspect-ratio: 1 / 1;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .st-desc {
+    display: none;
+  }
+
+  .st-number {
+    font-size: 2.3rem;
+    padding-top: 0;
+  }
+
+  .st-label {
+    font-size: 13px;
+  }
+}
+
+/* Small phones: stay 2 × 2, just tighter so it fits */
+@media (max-width: 380px) {
+  .st-grid {
+    gap: 10px;
+  }
+
+  .st-tile {
+    padding: 14px 13px;
+    border-radius: 14px;
+  }
+
+  .st-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .st-icon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .st-number {
+    font-size: 2rem;
+    padding-top: 10px;
+  }
+
+  .st-label {
+    font-size: 12.5px;
+  }
+
+  .st-beaches li {
+    padding-inline: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-tile,
+  .st-cta,
+  .st-cta svg {
+    transition: none;
+  }
+}

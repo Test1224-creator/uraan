@@ -1,0 +1,388 @@
+/* ─────────────────────────────────────────────
+   Uraan navbar (plain CSS, classes prefixed "un-")
+   Sits over the top of the hero and scrolls away with the page.
+   Brand blue comes from the logo: #1D72B3
+   ───────────────────────────────────────────── */
+
+.un-header {
+  --uraan-blue: #1d72b3;
+  --uraan-blue-dark: #155a8f;
+  --glass-bg: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.38);
+
+  position: absolute; /* not sticky: scrolls away with the page */
+  inset: 0 0 auto 0;
+  z-index: 50;
+  padding: 30px 48px;
+  pointer-events: none; /* only the bar itself catches clicks */
+}
+
+.un-bar {
+  pointer-events: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4px 12px 4px 22px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  /* one rounded glass capsule around the whole navbar:
+     logo, links and Book Now */
+  border-radius: 999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 12px 36px -18px rgba(0, 0, 0, 0.35);
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    backdrop-filter 0.35s ease;
+}
+
+/* ── Logo ─────────────────────────────────── */
+
+.un-brand {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Full Uraan logo (bird + wordmark), shown in white */
+.un-brand-logo {
+  width: 72px;
+  height: auto;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+/* ── Centre links (no border of their own: the whole bar is the capsule) ── */
+
+.un-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.un-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.un-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.un-active {
+  color: #fff;
+  font-weight: 700;
+}
+
+.un-active::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ── Book Now button ──────────────────────── */
+
+.un-actions {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.un-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  background: var(--uraan-blue);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 24px -8px rgba(29, 114, 179, 0.7);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.un-book:hover {
+  background: var(--uraan-blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px -8px rgba(29, 114, 179, 0.8);
+}
+
+.un-book-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s ease;
+}
+
+.un-book:hover .un-book-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ── Mobile menu button ───────────────────── */
+
+.un-menu-button {
+  display: none;
+  justify-self: start;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.un-menu-button svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ── Side drawer (mobile) ─────────────────── */
+
+.un-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(4, 14, 26, 0.55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.un-drawer {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 61;
+  display: flex;
+  flex-direction: column;
+  width: min(84vw, 340px);
+  padding: 20px 22px 26px;
+  overflow-y: auto;
+  color: #fff;
+  background:
+    radial-gradient(80% 50% at 0% 0%, rgba(29, 114, 179, 0.35) 0%, transparent 70%),
+    linear-gradient(180deg, #0b2540 0%, #071a2e 100%);
+  box-shadow: 24px 0 60px -20px rgba(0, 0, 0, 0.6);
+  transform: translateX(-100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s linear 0.4s;
+}
+
+.un-open .un-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.un-open .un-drawer {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s;
+}
+
+.un-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.un-drawer-logo {
+  width: 88px;
+  height: auto;
+  filter: brightness(0) invert(1); /* white logo on the navy drawer */
+}
+
+.un-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: pointer;
+}
+
+.un-drawer-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.un-drawer-links {
+  display: grid;
+  margin-top: 14px;
+}
+
+.un-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color 0.2s ease, padding-left 0.25s ease;
+}
+
+.un-drawer-link:hover {
+  color: #fff;
+  padding-left: 10px;
+}
+
+.un-drawer-link.un-active {
+  color: #fff;
+  font-weight: 700;
+}
+
+.un-drawer-link.un-active::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7cc0f2;
+}
+
+.un-drawer-book {
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.un-drawer-foot {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 28px;
+  font-size: 13px;
+}
+
+.un-drawer-foot a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+
+.un-drawer-foot a:hover {
+  color: #fff;
+}
+
+.un-drawer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.un-drawer-socials a {
+  font-weight: 600;
+  color: #fff;
+}
+
+.un-drawer :focus-visible,
+.un-menu-button:focus-visible {
+  outline: 2px solid #7cc0f2;
+  outline-offset: 2px;
+}
+
+/* Tablet & below: [menu] [logo centred] [Book Now] */
+@media (max-width: 900px) {
+  .un-header {
+    padding: 14px 14px;
+  }
+
+  .un-bar {
+    grid-template-columns: 1fr auto 1fr;
+    padding: 6px 6px 6px 6px;
+  }
+
+  .un-pill {
+    display: none;
+  }
+
+  .un-menu-button {
+    display: inline-flex;
+  }
+
+  .un-brand {
+    justify-self: center;
+  }
+
+  .un-actions .un-book {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small phones: smaller logo and a compact Book button */
+@media (max-width: 480px) {
+  .un-brand-logo {
+    width: 64px;
+  }
+
+  .un-actions .un-book {
+    gap: 6px;
+    padding: 9px 13px;
+    font-size: 0.8rem;
+  }
+
+  .un-actions .un-book-arrow {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .un-bar,
+  .un-link,
+  .un-book,
+  .un-book-arrow,
+  .un-backdrop,
+  .un-drawer,
+  .un-drawer-link {
+    transition: none;
+  }
+}
