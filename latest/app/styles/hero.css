@@ -2,20 +2,33 @@
    Uraan hero (plain CSS, classes prefixed "hx-")
 
    Layer order (bottom → top):
-     photo → top shade → giant word → hut cut-out → bottom shade
-     → word outline → content
+     photo (0) → top shade (1) → URAAN word (2) → sea copy of the photo (3)
+     → bottom shade (4) → beaches line, Explore link, socials (5)
+   The sea copy covers the bottom ~10% of the word, so it sinks into the water.
+   (.hx-stage and .hx-top have no z-index/transform on purpose: that would
+   group their children and break this interleaving.)
 
-   The photo and the cut-out live in .hx-stage, a box with the photo's
-   exact aspect ratio that "covers" the hero like object-fit: cover, so
-   the two images always line up perfectly.
+   The photo lives in .hx-stage, a box with the photo's exact aspect ratio
+   that "covers" the hero like object-fit: cover. Knowing where the stage
+   sits lets the text be anchored to a spot in the photo (see .hx-top).
    ───────────────────────────────────────────── */
 
 .hx {
-  --img-ratio: 1.4981; /* 1600 / 1068 */
-  --fx: 0.62; /* horizontal focal point (0 = left, 1 = right) */
-  --fy: 0.5; /* vertical focal point */
+  /* the square, text-free photo: 2000 × 2000 */
+  --img-ratio: 1;
+  --fx: 0.5; /* horizontal focal point (0 = left, 1 = right) */
+  /* vertical focal point when the photo is cropped (wide screens):
+     higher = shows more of the deck, horizon sits higher on screen */
+  --fy: 0.8;
+  /* where the sea horizon is in the photo (row 1388 of 2000) */
+  --horizon: 0.694;
+  /* the word's height ÷ width (SVG viewBox 196 / 1031.6) */
+  --word-ratio: 0.19;
+  /* how much of the word sits under the sea (0.1 = 10%) */
+  --word-sink: 0.1;
   --stage-w: max(100cqw, calc(100cqh * var(--img-ratio)));
   --stage-h: max(100cqh, calc(100cqw / var(--img-ratio)));
+  --stage-top: calc((100cqh - var(--stage-h)) * var(--fy));
   --content-w: min(1200px, calc(100cqw - 48px));
   --uraan-blue: #1d72b3;
 
@@ -25,49 +38,48 @@
   container-type: size;
   height: 100svh;
   min-height: 620px;
-  background: #3c4a57;
+  background: #1d4f8f;
   color: #fff;
 }
 
-/* ── Stage (photo + cut-out + callouts) ───── */
+/* ── Stage (photo) ────────────────────────── */
 
 .hx-stage {
   position: absolute;
   width: var(--stage-w);
   height: var(--stage-h);
   left: calc((100cqw - var(--stage-w)) * var(--fx));
-  top: calc((100cqh - var(--stage-h)) * var(--fy));
-}
-
-.hx-photo,
-.hx-cutout {
-  object-fit: cover;
-  filter: brightness(0.9) saturate(0.95);
+  top: var(--stage-top);
 }
 
 .hx-photo {
   z-index: 0;
+  object-fit: cover;
+  filter: brightness(0.92) saturate(0.95);
 }
 
-.hx-cutout {
+/* the second copy of the photo: only the sea below the horizon shows
+   (lines up pixel for pixel with the photo underneath) */
+.hx-sea {
   z-index: 3;
+  clip-path: inset(calc(var(--horizon) * 100%) 0 0 0);
   pointer-events: none;
 }
 
-/* darkens the sky a little so the white word reads clearly */
+/* a little shade at the top so the navbar and white text read clearly */
 .hx-shade-top {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(10, 24, 38, 0.5) 0%,
-    rgba(10, 24, 38, 0.18) 35%,
-    rgba(10, 24, 38, 0) 55%
+    rgba(10, 24, 38, 0.4) 0%,
+    rgba(10, 24, 38, 0.12) 30%,
+    rgba(10, 24, 38, 0) 50%
   );
 }
 
-/* bottom fade behind the socials (also hides the photo watermark) */
+/* bottom fade behind the socials */
 .hx-shade-bottom {
   position: absolute;
   inset: auto 0 0 0;
@@ -82,25 +94,33 @@
   pointer-events: none;
 }
 
-/* ── Left text block: URAAN / Luxury Beach Huts / Explore ── */
+/* ── Text block: URAAN / beaches / Explore ── */
 
 .hx-top {
-  /* Same column as the navbar, so the block lines up with the logo.
-     Centred with margins, NOT transform: a transform would create a
-     stacking context and stop the hut cut-out sliding between the
-     filled word and its outline. */
   position: absolute;
   left: 0;
   right: 0;
-  /* navbar (with logo) ends ~107px down; keep clear space below it */
-  top: clamp(220px, 24cqh, 260px);
+  /* the word's width (set per screen size below) */
+  --hx-word-w: min(calc(var(--content-w) - 56px), 780px, 100cqh);
+  /* never closer to the top than this (keeps clear of the navbar) */
+  --hx-min-top: 150px;
+  /* The block starts where the word's top must be so that its bottom
+     10% dips below the horizon: horizon − 90% of the word's height. */
+  top: max(
+    var(--hx-min-top),
+    calc(
+      var(--stage-top) + var(--stage-h) * var(--horizon) -
+        (1 - var(--word-sink)) * var(--hx-word-w) * var(--word-ratio)
+    )
+  );
   width: var(--content-w);
   margin-inline: auto;
   padding-inline: 28px;
+  text-align: center;
 
   /* space between the heading and the beaches line
      (the Explore link has its own margin-top in .hx-explore) */
-  --hx-stack-gap: 20px;
+  --hx-stack-gap: 0px;
 }
 
 .hx-title {
@@ -108,22 +128,13 @@
   font-weight: inherit;
 }
 
-/* Big word reaching across to the hut (its roof slides in front of the
-   last letters). ~5x wider than tall, so the width is capped by the
-   screen width AND height to stay in proportion on wide, short screens. */
+/* the word sits under the sea layer */
 .hx-word-wrap {
   position: relative;
+  z-index: 2;
   display: block;
-  /* End the word just before the hut. The photo spans the whole screen
-     and the hut's balcony starts at its middle (50cqw), while the text
-     column is centred, so subtract the column's left offset plus a small
-     gap. Also capped by height and a max size. */
-  width: min(
-    100%,
-    calc(50cqw - (100cqw - var(--content-w)) / 2 - 60px),
-    80cqh,
-    720px
-  );
+  width: var(--hx-word-w);
+  margin-inline: auto;
 }
 
 .hx-word {
@@ -133,43 +144,26 @@
   overflow: visible;
   font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: 30px;
 }
 
-.hx-word--fill {
-  position: relative;
-  z-index: 6; /* above the cut-out (3) and bottom shade (4) */
-}
-
-.hx-word--outline {
-  display: none; /* no longer needed, the word is fully in front */
-}
 .hx-beaches {
   position: relative;
-  z-index: 7;
+  z-index: 5;
   margin: var(--hx-stack-gap) 0 0;
   font-size: 15px;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
-}
-
-
-.hx-word--outline text {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.55);
-  stroke-width: 1.4px;
-  vector-effect: non-scaling-stroke;
 }
 
 /* ── Explore link ─────────────────────────── */
 
 .hx-explore {
   position: relative;
-  z-index: 7;
+  z-index: 5;
   display: inline-flex;
   align-items: center;
-  margin-top: 10px; /* space above the Explore link */
+  margin-top: 4px; /* space above the Explore link */
   padding-bottom: 6px;
   color: #fff;
   font-size: 15px;
@@ -203,7 +197,7 @@
   left: 0;
   right: 0;
   bottom: clamp(24px, 5cqh, 48px);
-  z-index: 7;
+  z-index: 5;
   width: var(--content-w);
   margin-inline: auto;
   padding-inline: 28px;
@@ -212,7 +206,6 @@
   justify-content: flex-end;
   gap: 24px;
 }
-
 
 .hx-socials {
   display: flex;
@@ -253,6 +246,62 @@
 
 /* ── Responsive ───────────────────────────── */
 
+/* Desktop only (wider than 1024px): URAAN stays at the horizon, and the
+   beaches line + Explore link move down onto the deck floor, below the
+   lit railing (the floor starts 82.2% down the photo, and so do the
+   lines). They never come closer than 100px to the bottom of the hero.
+   .hx-top becomes a "see-through" box here (display: contents), so the
+   word and the two lines are each placed against the whole hero. */
+@media (min-width: 1025px) {
+  .hx-top {
+    display: contents;
+  }
+
+  .hx-word-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: max(
+      var(--hx-min-top),
+      calc(
+        var(--stage-top) + var(--stage-h) * var(--horizon) -
+          (1 - var(--word-sink)) * var(--hx-word-w) * var(--word-ratio)
+      )
+    );
+  }
+
+  .hx-sub {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    top: min(
+      calc(var(--stage-top) + var(--stage-h) * 0.822),
+      calc(100cqh - 100px)
+    );
+    text-align: center;
+  }
+
+  .hx-sub .hx-beaches {
+    margin-top: 0;
+  }
+}
+
+/* Small laptops and tablets (601px – 1024px): URAAN shrinks smoothly
+   with the screen width, from 768px wide at 1024px down to about 386px
+   at 601px, which meets the phone size with no jump.
+   (90cqw - 155px is that straight line; also capped by the screen height
+   and the content width.) */
+@media (max-width: 1024px) {
+  .hx-top {
+    --hx-word-w: min(
+      calc(90cqw - 155px),
+      calc(var(--content-w) - 36px),
+      100cqh
+    );
+  }
+}
+
 /* Tablet */
 @media (max-width: 900px) {
   .hx {
@@ -265,38 +314,47 @@
   }
 
   .hx-top {
-    top: clamp(148px, 19cqh, 220px);
-  }
-
-  .hx-word-wrap {
-    width: min(100%, 520px);
+    --hx-min-top: 130px;
   }
 }
 
 /* Phone */
 @media (max-width: 600px) {
   .hx {
-    --fx: 0.6;
     min-height: 560px;
   }
 
   .hx-top {
-    top: 128px;
+    --hx-min-top: 120px;
+    /* smaller heading, adjust to taste */
+    --hx-word-w: calc((var(--content-w) - 36px) * 0.72);
   }
-
-  .hx-word-wrap {
-    width: 100%;
-  }
-
 
   .hx-beaches {
     letter-spacing: 0.06em;
     line-height: 1.6;
   }
 
-
   .hx-bottom {
-    justify-content: flex-start;
+    justify-content: center; /* social icons centred on phones */
+  }
+
+  /* Phones: no "sinking into the sea" effect. The whole word sits above
+     the sea, and the text block's BOTTOM rests just above the horizon
+     (67.5% down the photo), like the original phone layout. */
+  .hx-sea {
+    display: none;
+  }
+
+  .hx-top {
+    z-index: 5;
+    top: calc(var(--stage-top) + var(--stage-h) * 0.675);
+    transform: translateY(-100%);
+    --hx-stack-gap: 20px;
+  }
+
+  .hx-explore {
+    margin-top: 10px;
   }
 
   .hx-social {
@@ -307,36 +365,6 @@
   .hx-social svg {
     width: 17px;
     height: 17px;
-  }
-}
-
-/* Portrait screens (phones, upright tablets): the sky is tall and empty,
-   so the whole text block sits low on the deck, just above the social
-   icons. Placed after the phone rules so it wins over their `top`. */
-@media (max-aspect-ratio: 1/1) {
-  .hx-top {
-    top: auto;
-    bottom: calc(clamp(24px, 5cqh, 48px) + 42px + 26px);
-  }
-
-  /* down here the word sits over the deck (part of the cut-out layer),
-     so draw the filled word above it and drop the outline copy */
-  .hx-word--fill {
-    z-index: 6;
-  }
-
-  .hx-word--outline {
-    display: none;
-  }
-
-  .hx-shade-bottom {
-    height: 62%;
-    background: linear-gradient(
-      0deg,
-      rgba(8, 18, 28, 0.82) 0%,
-      rgba(8, 18, 28, 0.55) 40%,
-      rgba(8, 18, 28, 0) 100%
-    );
   }
 }
 

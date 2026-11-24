@@ -13,34 +13,9 @@ const NAV_LINKS = [
   { id: "contact", label: "Contact" },
 ] as const;
 
-const SOCIALS = [
-  { href: "https://instagram.com/uraanbeachhuts", label: "Instagram" },
-  { href: "https://facebook.com/uraanbeachhuts", label: "Facebook" },
-  { href: "https://tiktok.com/@uraanbeachhuts", label: "TikTok" },
-  { href: "https://www.linkedin.com/company/uraanbeachhuts/", label: "LinkedIn" },
-];
-
 const WHATSAPP_URL =
   "https://wa.me/923002998889?text=" +
   encodeURIComponent("Hi Uraan! I'd like to book a beach hut. Is it available?");
-
-function ArrowIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M7 17 17 7" />
-      <path d="M8 7h9v9" />
-    </svg>
-  );
-}
 
 function MenuIcon() {
   return (
@@ -165,7 +140,6 @@ export default function Navbar() {
             className="un-book"
           >
             Book Now
-            <ArrowIcon className="un-book-arrow" />
           </a>
         </div>
       </nav>
@@ -199,28 +173,6 @@ export default function Navbar() {
         <nav className="un-drawer-links" aria-label="Mobile">
           {renderLinks("un-drawer-link")}
         </nav>
-
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="un-book un-drawer-book"
-        >
-          Book on WhatsApp
-          <ArrowIcon className="un-book-arrow" />
-        </a>
-
-        <div className="un-drawer-foot">
-          <a href="tel:+923002998889">+92 300 299 8889</a>
-          <a href="mailto:uraanbeachhuts@gmail.com">uraanbeachhuts@gmail.com</a>
-          <div className="un-drawer-socials">
-            {SOCIALS.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
-                {s.label}
-              </a>
-            ))}
-          </div>
-        </div>
       </aside>
     </header>
   );

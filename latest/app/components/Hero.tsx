@@ -1,7 +1,11 @@
 import Image from "next/image";
 import "../styles/hero.css";
-import photo from "../images/hero-dusk-hut.jpeg";
-import cutout from "../images/hero-dusk-hut-fg.webp";
+// The clean square photo (2000 x 2000, no text), used at every screen size.
+import photo from "../images/hero-ocean-mobile.webp";
+
+// The square photo covers the hero: full width on landscape screens,
+// full height on portrait ones (see .hx-stage in hero.css).
+const PHOTO_SIZES = "(max-aspect-ratio: 1/1) 100vh, 100vw";
 
 const SOCIALS = [
   {
@@ -66,33 +70,31 @@ function ArrowIcon() {
 
 /**
  * The giant word, drawn as SVG so it scales as one piece.
- * The viewBox is cropped to the letters' ink (Manrope 800 at 268px:
- * "U" starts at x=16.75, "N" ends at x=928.3), so the "U" lines up
- * exactly with the logo's left edge — no empty side-bearing.
+ * Letters are spaced 30 units apart. The viewBox is cropped to the ink
+ * (Manrope 800 at 268px: "U" starts at x=16.75; "N" ends at
+ * 928.3 + 4 gaps × 30 = 1048.3), so centring is exact at every size.
  */
-function Word({ variant }: { variant: "fill" | "outline" }) {
+function Word() {
   return (
     <svg
-      className={`hx-word hx-word--${variant}`}
-      viewBox="16.75 0 911.6 196"
-      aria-hidden={variant === "outline" ? true : undefined}
-      role={variant === "fill" ? "img" : undefined}
-      aria-label={variant === "fill" ? "Uraan" : undefined}
+      className="hx-word"
+      viewBox="16.75 0 1031.6 196"
+      role="img"
+      aria-label="Uraan"
     >
-      {variant === "fill" && (
-        <defs>
-          <linearGradient id="hx-word-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="55%" stopColor="#fdf3ea" />
-            <stop offset="100%" stopColor="#f6d2b4" />
-          </linearGradient>
-        </defs>
-      )}
+      <defs>
+        <linearGradient id="hx-word-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="55%" stopColor="#fdf3ea" />
+          <stop offset="100%" stopColor="#f6d2b4" />
+        </linearGradient>
+      </defs>
       <text
         x="0"
         y="194"
         fontSize="268"
-        fill={variant === "fill" ? "url(#hx-word-gradient)" : undefined}
+        letterSpacing="30"
+        fill="url(#hx-word-gradient)"
       >
         URAAN
       </text>
@@ -106,21 +108,26 @@ export default function Hero() {
       <div className="hx-stage">
         <Image
           src={photo}
-          alt="A modern Uraan beach hut at dusk with a glowing pool and deck"
+          alt="A sea-view deck at an Uraan beach hut, looking out over the Arabian Sea"
           fill
-          priority
-          quality={85}
-          sizes="(max-aspect-ratio: 3/2) 150vh, 100vw"
+          sizes={PHOTO_SIZES}
+          quality={90}
+          loading="eager"
+          fetchPriority="high"
           className="hx-photo"
         />
+        {/* Same photo again, cut to just the sea below the horizon and laid
+            over the URAAN word, so the letters look like they sink into the
+            water (see .hx-sea in hero.css). Decorative only. */}
         <Image
-          src={cutout}
+          src={photo}
           alt=""
+          aria-hidden="true"
           fill
-          priority
-          quality={85}
-          sizes="(max-aspect-ratio: 3/2) 150vh, 100vw"
-          className="hx-cutout"
+          sizes={PHOTO_SIZES}
+          quality={90}
+          loading="eager"
+          className="hx-photo hx-sea"
         />
       </div>
 
@@ -130,17 +137,19 @@ export default function Hero() {
       <div className="hx-top">
         <h1 className="hx-title">
           <span className="hx-word-wrap">
-            <Word variant="fill" />
-            <Word variant="outline" />
+            <Word />
           </span>
         </h1>
-        <p className="hx-beaches">
-          French · Turtle · Hawksbay · Sandspit · Himalaya — Karachi
-        </p>
-        <a href="#huts" className="hx-explore">
-          Explore Huts
-          <ArrowIcon />
-        </a>
+        {/* desktop: these two lines sit on the deck floor (see .hx-sub) */}
+        <div className="hx-sub">
+          <p className="hx-beaches">
+            French · Turtle · Hawksbay · Sandspit · Himalaya — Karachi
+          </p>
+          <a href="#huts" className="hx-explore">
+            Explore Huts
+            <ArrowIcon />
+          </a>
+        </div>
       </div>
 
       <div className="hx-bottom">
