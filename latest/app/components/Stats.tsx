@@ -2,9 +2,7 @@ import type { ReactNode } from "react";
 import CountUp from "./CountUp";
 import "../styles/stats.css";
 
-const WHATSAPP_URL =
-  "https://wa.me/923002998889?text=" +
-  encodeURIComponent("Hi Uraan! I'd like to plan a beach day. Can you help?");
+import { BOOKING_URL } from "../lib/booking";
 
 // Figures and copy from the About section of uraanbeachhuts.com
 const STATS: {
@@ -97,12 +95,7 @@ export default function Stats() {
             ))}
           </ul>
 
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="st-cta"
-          >
+          <a href={BOOKING_URL} className="st-cta">
             Plan your beach day
             <ArrowIcon />
           </a>

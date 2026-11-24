@@ -2,12 +2,8 @@ import Image from "next/image";
 import "../styles/cta.css";
 // Seadale at dusk, from the uraanbeachhuts.com gallery
 import photo from "../images/cta-seadale-dusk.jpg";
+import { BOOKING_URL } from "../lib/booking";
 
-const WHATSAPP_URL =
-  "https://wa.me/923002998889?text=" +
-  encodeURIComponent(
-    "Hi Uraan! I'd like to book a beach hut. Date: ___, Group size: ___",
-  );
 
 export default function CallToAction() {
   return (
@@ -32,13 +28,8 @@ export default function CallToAction() {
         </p>
 
         <div className="ct-actions">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ct-btn ct-btn--primary"
-          >
-            Book on WhatsApp
+          <a href={BOOKING_URL} className="ct-btn ct-btn--primary">
+            Book Now
             <svg
               viewBox="0 0 24 24"
               fill="none"

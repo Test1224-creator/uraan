@@ -3,6 +3,7 @@ import "../styles/featured-huts.css";
 import paralia from "../images/hut-paralia-a43.jpeg";
 import blueOcean from "../images/hut-blue-ocean-a21.jpeg";
 import seadale from "../images/hut-seadale-a91.jpg";
+import { BOOKING_URL } from "../lib/booking";
 
 type Hut = {
   code: string;
@@ -53,11 +54,6 @@ const HUTS: Hut[] = [
   },
 ];
 
-const whatsappFor = (hut: Hut) =>
-  "https://wa.me/923002998889?text=" +
-  encodeURIComponent(
-    `Hi Uraan! Is ${hut.name} (${hut.code}) at ${hut.beach} available? Please share the rates.`,
-  );
 
 function ArrowIcon() {
   return (
@@ -145,11 +141,9 @@ export default function FeaturedHuts() {
                     <p className="fh-tagline">{hut.tagline}</p>
                   </div>
                   <a
-                    href={whatsappFor(hut)}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={BOOKING_URL}
                     className="fh-enquire"
-                    aria-label={`Check availability for ${hut.name} on WhatsApp`}
+                    aria-label={`Book ${hut.name}`}
                   >
                     <ArrowIcon />
                   </a>

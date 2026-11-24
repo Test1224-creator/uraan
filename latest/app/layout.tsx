@@ -22,7 +22,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Uraan – Karachi Beach Huts & Resorts",
   description:
-    "Beach huts, resorts and farmhouses across Karachi — Turtle, French, Hawksbay and Sandspit. Book on WhatsApp.",
+    "Beach huts, resorts and farmhouses across Karachi — Turtle, French, Hawksbay and Sandspit. Book your beach day.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

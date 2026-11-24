@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import "../styles/navbar.css";
 import logo from "../images/logo.png";
+import { BOOKING_URL } from "../lib/booking";
 
 const NAV_LINKS = [
   { id: "home", label: "Home" },
@@ -13,9 +14,6 @@ const NAV_LINKS = [
   { id: "contact", label: "Contact" },
 ] as const;
 
-const WHATSAPP_URL =
-  "https://wa.me/923002998889?text=" +
-  encodeURIComponent("Hi Uraan! I'd like to book a beach hut. Is it available?");
 
 function MenuIcon() {
   return (
@@ -133,11 +131,7 @@ export default function Navbar() {
         <div className="un-pill">{renderLinks()}</div>
 
         <div className="un-actions">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="un-book"
+          <a href={BOOKING_URL} className="un-book"
           >
             Book Now
           </a>

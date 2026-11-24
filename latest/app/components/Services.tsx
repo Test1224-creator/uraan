@@ -4,10 +4,7 @@ import "../styles/services.css";
 import eventsPhoto from "../images/service-events.jpg";
 import cateringPhoto from "../images/service-catering.jpg";
 import activitiesPhoto from "../images/service-activities.jpg";
-
-const QUOTE_URL =
-  "https://wa.me/923002998889?text=" +
-  encodeURIComponent("Hi Uraan! I'd like a quote for an event at a beach hut.");
+import { BOOKING_URL } from "../lib/booking";
 
 // Copy from the services on uraanbeachhuts.com
 const SERVICES: {
@@ -79,12 +76,7 @@ export default function Services() {
               One window for every celebration. We handle the booking, setup,
               catering and activities so you can focus on the occasion.
             </p>
-            <a
-              href={QUOTE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="sv-cta"
-            >
+            <a href={BOOKING_URL} className="sv-cta">
               Get a quote
               <ArrowIcon />
             </a>

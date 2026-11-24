@@ -29,7 +29,7 @@ const REVIEWS: {
   },
   {
     quote:
-      "Clean rooms, a working kitchen and a pool the kids never wanted to leave. Booking on WhatsApp took five minutes.",
+      "Clean rooms, a working kitchen and a pool the kids never wanted to leave. Booking took five minutes.",
     who: "Family weekend",
     meta: "Blue Ocean · Turtle Beach",
     icon: (
