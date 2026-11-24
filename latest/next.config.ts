@@ -6,10 +6,6 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   cacheComponents: true,
-  images: {
-    // 90 is used for the hero photo so it stays crisp on big screens
-    qualities: [75, 90],
-  },
   partialPrefetching: true,
   turbopack: {
     rules: {

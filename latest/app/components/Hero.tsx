@@ -1,6 +1,8 @@
 import Image from "next/image";
 import "../styles/hero.css";
 // The clean square photo (2000 x 2000, no text), used at every screen size.
+// It's already compressed (about 110 KB), so it's sent as-is (`unoptimized`):
+// smaller and sharper than letting Next.js re-encode it.
 import photo from "../images/hero-ocean-mobile.webp";
 
 // The square photo covers the hero: full width on landscape screens,
@@ -111,7 +113,7 @@ export default function Hero() {
           alt="A sea-view deck at an Uraan beach hut, looking out over the Arabian Sea"
           fill
           sizes={PHOTO_SIZES}
-          quality={90}
+          unoptimized
           loading="eager"
           fetchPriority="high"
           className="hx-photo"
@@ -125,7 +127,7 @@ export default function Hero() {
           aria-hidden="true"
           fill
           sizes={PHOTO_SIZES}
-          quality={90}
+          unoptimized
           loading="eager"
           className="hx-photo hx-sea"
         />
